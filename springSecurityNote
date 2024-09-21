@@ -1,1 +1,31 @@
 spring security provides applicatoin level security for out application.
+
+authentication is basically the logic in our application which decides who is user trying to do something.
+
+    there are various way in which this can be figured out.
+
+the second step is authorization
+
+    authority---have relaitonship
+        verb
+    role---are relaitonship
+        badge
+
+    GrantedAuthority is the interface beind authority and role
+
+------------
+authentication
+------------
+    HTTPBasic
+    CERTIFICATE
+    JWT(OAUTH2)
+
+------------
+authorization
+------------
+    webapps---
+        HTTPFilter
+    non webapps-----
+        Aspect
+    Aspect can also be used with webapps
+
