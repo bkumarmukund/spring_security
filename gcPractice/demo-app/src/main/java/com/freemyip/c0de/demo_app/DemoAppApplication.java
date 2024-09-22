@@ -14,11 +14,11 @@ public class DemoAppApplication {
 	public String home() {
 		return "welcome anynymous user";
 	}
-	@GetMapping("/home/user")
+	@GetMapping("/user/home")
 	public String homeOfUser() {
 		return "welcome logged in user";
 	}
-	@GetMapping("/home/admin")
+	@GetMapping("/admin/home")
 	public String homeOfAdmin() {
 		return "welcome admin";
 	}
@@ -28,3 +28,4 @@ public class DemoAppApplication {
 	}
 
 }
+
