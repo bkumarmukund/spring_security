@@ -32,6 +32,7 @@ public class SecurityConfiguration {
         })
         .formLogin(form -> form
             .loginPage("/login") // Custom login page URL
+            .successHandler(new AuthenticationSuccesHandler())
             .permitAll())
         .build();
     }
