@@ -25,12 +25,14 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(csrf -> csrf.disable()) // Disable CSRF
             .authorizeRequests(registry->{
-            registry.requestMatchers("/home","/register/**").permitAll();
+            registry.requestMatchers("/home","/register/**","/custom-login").permitAll();
             registry.requestMatchers("/admin/**").hasRole("ADMIN");
             registry.requestMatchers("/user/**").hasRole("USER");
             registry.anyRequest().authenticated();
         })
-        .formLogin(fl->fl.permitAll())
+        .formLogin(form -> form
+            .loginPage("/login") // Custom login page URL
+            .permitAll())
         .build();
     }
 
