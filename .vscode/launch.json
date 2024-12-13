@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Ss2022C2E1Application",
+            "request": "launch",
+            "mainClass": "com.freemyip.c0de.ss_2022_c2_e1.Ss2022C2E1Application",
+            "projectName": "ss_2022_c2_e1"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-Ss2022C1E1Application<ss_2022_c1_e1>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.freemyip.c0de.ss_2022_c1_e1.Ss2022C1E1Application",
+            "projectName": "ss_2022_c1_e1",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

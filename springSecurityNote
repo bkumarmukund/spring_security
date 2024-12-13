@@ -29,3 +29,171 @@ authorization
         Aspect
     Aspect can also be used with webapps
 
+    what is the default kind of authentication which is used by spring in the simple project
+    > by default HTTPBasic is used
+
+   in case of HttpBasic we have to use the authorization header
+   and we will send the credentials which will be base64 encoded
+   we have to select Auth Header > Basic Auth > and then we provide our credentials
+
+
+    how did providing the credentials as the auth header provided resource /hello
+    > this information is send on header
+	a header is created by default 
+   we can see this encoded header in preview section of the postman
+   this will be encoded with base64
+   we can see the decoded version using any tool over the internet
+
+   this is how HttpBasic works
+    it gets it's credentials in the form of base64 encoded value
+
+   base 64 is just an encoding and not an encryption
+
+	differenece between encoding--- encrypting---- and hash function
+
+	   encoding
+	   ````````it is only afunction that is always possible to reverse somehow
+		  it might or might not require a secret
+		  it can just be a mathematical transformation that doesn't even need
+		  a secret to be known to revert it
+
+		e.g. string 1234 => 4321   (one kind of encoding) rule is read from left to right
+		cypher was used like mapping alphabet to other alphabet
+
+	  encryption
+	  ```````````we are transforming an input to an output
+		    but to go back from output to input we always need to have some secret
+		we can say that it is a particular way of encoding for which we always need a secret
+		encryption is a transformation that assures us that not everyone can find input from an output
+
+	  hash function
+	  ``````````````
+		from an input we can alwasy get an output
+		but we can never by any means find the input from the output
+		two rule of hash function
+		1) o ---x---> i 
+		2) i -- -- -->
+		given an input we can tell for certain that it corresponds to the output
+
+		hash functions are the preferred way to store temporary or permanent password
+		 
+		md5> it's a hash transformation but is not recommended 
+			it was proved to be mathematically possible to reach input from the output
+			always from the same input it will have same ouptut which leads to rainbow tables
+
+		at present we don't use a hash function which always produces the same output for same input
+		we use whcih provide salting which creates different outpout for same input but privides flexibility 
+		to compare the output
+
+		HttpBasic is always base64 encoded that's why we should never use HttpBasic outside https
+		
+	_________________
+	userDetailService
+	-----------------
+	it is the component which manages the userdetails
+	so we implement it in web applicatoin to tell spring where to get the credentials from
+	
+	we added a bean of UserDetailsService
+	we also added a bean of PasswordEncoder
+
+	in order to define our user
+
+		here behind the scene
+		filter HttpBasic -> AuthManager -> AuthProvider
+		AuthProvider uses UserDetailsService and PasswordEncoder
+
+	we only created beans of UserDetailsService and PasswordEncoder
+	because all other beans were preconfigured by the spring
+
+	
+
+
+----------------------------___2___--------how to manage users
+==
+	 UserDetailsService is a contract between out application and spring security
+	through which spring security knows how to obtain user details
+
+	spring security starts in a web application from filters
+
+	whenever the request enters the filter chain
+		the authentication filter deligates to authentication manager
+		the authentication manager is an object whose purpose is to find a way
+			in which it can authenticate the users
+			which is implemented by objectes called authentication providers
+
+		we do have only one authentication manager
+		but we can have one or more authentication providers
+		although we have only one authentication provider
+
+	if the authenticatin provider uses the username and password credentials
+		then it has to use two components namely
+			UserDetailsService and PasswordEncoder
+
+	if the authentication succeeds
+		the last thing that happens, it stores the authentication object in a security context
+
+	// create our own UserDetailsService and use a database to store in database
+	
+	Granted Authorities
+	````````````````````
+	User -> Granted Authorities(Interface)
+			|
+		`````````````````
+		|		|
+	Authorities	      Role
+	
+	behind the scene, the interface Granted Authorities, we use to implement authorities or role
+	there is nothing special about using Role or Authorities
+	it's the same contract and Granted Aurhtorities represent both of them
+	
+	from conceptual perspective-- authority is an actiion
+		an action that a user can do in an applicatoin
+		it is usually represented by a verb like read write delete execute
+	role is like a badge like admin manager user visitor etc.
+
+	It all depends on how we want to implement rules or authority restriction in our application
+
+	if we want to have authorization configuraton based on action, i.e., we want granular control
+		then we use authorities
+
+	technically it's all one contract behind the role be it authorities or role
+
+		
+-------------------------__3__ custom authentication
+
+when the http request enters, it enters throught the filter chain
+f1--->f2---->...--->fn
+
+one of these filters is  responsible for delegating to the entire auth mechanism
+
+filter delegates to authentication manager
+f1--->Auth Manager--->Auth Provider--->
+
+we might have different authentication providers
+in case, if they need credentials like username and password, then we have decicated components for that, namely UserDetailsService and PasswordEncoder
+
+ what if we want to implement a custom authentication
+ ``````````````````````````````````````````````````````
+It's unlikely that we will be implementing anything custom.
+
+we are going to implement custom auth fileter
+which will take our request and at the end reach our controller
+
+between which we have many filters like csrf filter, authorization filter etc.
+
+today's implementatin
+	Custom AF
+	custom AM
+	custome AP
+	
+	the whole idea is that somewhere on the server we have static key and we want to use that key to get authenticated
+
+	so only the request which have the key in the header will get authenticated
+
+	we don't have users and we don't have passwords
+	i.e., custom authentication
+
+	
+	
+	
+
